@@ -1,50 +1,81 @@
 import React from "react";
 import { useFormik } from "formik";
+import validationSchema from "./validations";
 
 function SignUp() {
-  const { handleBlur, handleChange, values, handleSubmit } = useFormik({
+  const {
+    handleBlur,
+    handleChange,
+    values,
+    handleSubmit,
+    errors,
+    touched,
+  } = useFormik({
     initialValues: {
       email: "",
       password: "",
       passwordConfirm: "",
     },
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
     },
+    validationSchema,
   });
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="email">Email Address</label>
-      <br />
+
       <input
+        style={errors.email && touched.email && { borderColor: "red" }}
         id="email"
         name="email"
-        type="email"
         onChange={handleChange}
         value={values.email}
+        onBlur={handleBlur}
       />
-      <br />
+      {errors.email && touched.email && (
+        <pre style={{ color: "red", fontSize: 10 }}>{errors.email}</pre>
+      )}
       <label htmlFor="password">Password</label>
-      <br />
+
       <input
+        style={errors.password && touched.password && { borderColor: "red" }}
         id="password"
         name="password"
         type="password"
         onChange={handleChange}
+        onBlur={handleBlur}
         value={values.password}
       />
-      <br />
+      {errors.password && touched.password && (
+        <pre style={{ color: "red", fontSize: 10 }}>{errors.password}</pre>
+      )}
+
       <label htmlFor="passwordConfirm">Password Confirm</label>
-      <br />
+
       <input
+        style={
+          errors.passwordConfirm &&
+          touched.passwordConfirm && { borderColor: "red" }
+        }
         id="passwordConfirm"
         name="passwordConfirm"
-        type="passwordConfirm"
+        type="password"
         onChange={handleChange}
         value={values.passwordConfirm}
+        onBlur={handleBlur}
       />
+      {errors.passwordConfirm && touched.passwordConfirm && (
+        <pre
+          style={{
+            color: "red",
+            fontSize: 10,
+          }}
+        >
+          {errors.passwordConfirm}
+        </pre>
+      )}
       <br />
-
       <button type="submit">Submit</button>
     </form>
   );
